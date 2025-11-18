@@ -14,7 +14,9 @@ public class ToDoRepository {
     private Long nextId = 1L;
 
     public ToDoDTO save(ToDoDTO todo) {
-        todo.setId(nextId++);
+        if(todo.getId() == null){
+            todo.setId(nextId++);
+        }
         storage.put(todo.getId(),todo);
         return todo;
     }
@@ -25,6 +27,10 @@ public class ToDoRepository {
 
     public ToDoDTO findById(Long id) {
         return storage.get(id); //Map 형식이기 때문에 get함수를 씀
+    }
+
+    public ToDoDTO deleteById(Long id) {
+        return storage.remove(id);
     }
 
 }

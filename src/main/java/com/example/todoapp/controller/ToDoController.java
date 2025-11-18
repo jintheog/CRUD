@@ -60,14 +60,35 @@ public class ToDoController {
         return "detail";
     }
 
-    @GetMapping("/todos/{id}")
+    @GetMapping("/todos/{id}/delete")
     public String delete(@PathVariable Long id, Model model) {
         //삭제로직
-
+        toDoRepository.deleteById(id);
         return "redirect:/todos";
     }
 
+    @GetMapping("/todos/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+        ToDoDTO todo = toDoRepository.findById(id);
+        model.addAttribute("todo",todo);
+        return "edit";
+    }
 
+    @GetMapping("/todos/{id}/update")
+    public String update(@PathVariable Long id,
+                         @RequestParam String title,
+                         @RequestParam String content,
+                         @RequestParam (defaultValue = "false") Boolean completed,
+                         Model model) {
+        ToDoDTO todo = toDoRepository.findById(id);
+
+        todo.setTitle(title);
+        todo.setContent(content);
+        todo.setCompleted(completed);
+
+        return "redirect:/todos/" + id;
+
+    }
 
 
 }
