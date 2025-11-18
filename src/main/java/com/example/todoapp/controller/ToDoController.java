@@ -12,7 +12,15 @@ import java.util.List;
 
 @Controller
 public class ToDoController {
-    private final ToDoRepository toDoRepository = new ToDoRepository();
+    // repository를 컨트롤러에서도 쓰고 다른 클래스에 (TodoappApplication)서도 같은 저장소를 재사용해서 써야 함.
+    //@Repository를 씀
+    //private final ToDoRepository toDoRepository = new ToDoRepository();
+    private final ToDoRepository toDoRepository;
+
+    public ToDoController(ToDoRepository toDoRepository) {
+        this.toDoRepository = toDoRepository;
+    }
+
     @GetMapping("/todos")
     public String todos(Model model) {
         //↓ 이전에 create 함수에서 만든 repository와 다른 객체(저장소)를 새로 만들어서 사용 하면 안됨

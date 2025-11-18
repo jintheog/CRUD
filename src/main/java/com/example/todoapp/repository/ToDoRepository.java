@@ -1,12 +1,14 @@
 package com.example.todoapp.repository;
 
 import com.example.todoapp.dto.ToDoDTO;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class ToDoRepository {
     private final Map<Long, ToDoDTO> storage = new ConcurrentHashMap<>();
     private Long nextId = 1L;
