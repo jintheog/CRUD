@@ -60,5 +60,14 @@ public class ToDoController {
         return "detail";
     }
 
+    @GetMapping("/todos/{id}")
+    public String delete(@PathVariable Long id, Model model) {
+        //삭제로직
+
+        return "redirect:/todos";
+    }
+
+
+
 
 }
