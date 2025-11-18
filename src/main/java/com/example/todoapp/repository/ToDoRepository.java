@@ -8,4 +8,11 @@ public class ToDoRepository {
     private final Map<Long, ToDoDTO> storage = new ConcurrentHashMap<>();
     private Long nextId = 1L;
 
+    public ToDoDTO save(ToDoDTO todo) {
+        todo.setId(nextId++);
+        storage.put(todo.getId(),todo);
+        return todo;
+    }
+
+
 }
