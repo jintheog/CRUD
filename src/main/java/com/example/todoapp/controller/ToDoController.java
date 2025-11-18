@@ -5,6 +5,7 @@ import com.example.todoapp.repository.ToDoRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -39,7 +40,16 @@ public class ToDoController {
 
         model.addAttribute("todo", todo);
 
-        return "create";
+//        return "create";
+        return "redirect:/todos";
+    }
+
+    @GetMapping("/todos/{id}")
+    public String detail(
+            @PathVariable Long id, Model model){
+        ToDoDTO todo =  toDoRepository.findById(id);
+        model.addAttribute("todo", todo);
+        return "detail";
     }
 
 

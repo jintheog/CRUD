@@ -21,4 +21,8 @@ public class ToDoRepository {
         return new ArrayList<>(storage.values());
     }
 
+    public ToDoDTO findById(Long id) {
+        return storage.get(id); //Map 형식이기 때문에 get함수를 씀
+    }
+
 }
