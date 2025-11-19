@@ -71,9 +71,11 @@ public class ToDoController {
     }
 
     @GetMapping("/{id}/delete")
-    public String delete(@PathVariable Long id, Model model) {
+    public String delete(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         //삭제로직
         toDoRepository.deleteById(id);
+        redirectAttributes.addFlashAttribute("message", "할 일이 삭제 되었습니다");
+        redirectAttributes.addFlashAttribute("status", "delete");
         return "redirect:/todos";
     }
 
@@ -94,6 +96,7 @@ public class ToDoController {
                          @RequestParam String title,
                          @RequestParam String content,
                          @RequestParam (defaultValue = "false") Boolean completed,
+                         RedirectAttributes redirectAttributes,
                          Model model) {
         try {
             ToDoDTO todo = toDoRepository.findById(id)
@@ -103,8 +106,12 @@ public class ToDoController {
             todo.setContent(content);
             todo.setCompleted(completed);
 
+            toDoRepository.save(todo);
+            redirectAttributes.addFlashAttribute("message", "할 일이 수정되었습니다.");
+
             return "redirect:/todos/" + id;
         } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("message", "없는 to do 입니다.");
             return "redirect:/todos";
         }
     }
