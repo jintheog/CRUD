@@ -37,4 +37,15 @@ public class ToDoRepository {
         return storage.remove(id);
     }
 
+    public List<ToDoDTO> findByTitleContaining(String keyword) {
+        return storage.values().stream()
+                .filter((todo)->todo.getTitle().contains(keyword))
+                .toList();
+    }
+    public List<ToDoDTO> findByCompleted(boolean completed) {
+        return storage.values().stream()
+                .filter((todo)->todo.isCompleted() == completed)
+                .toList();
+    }
+
 }

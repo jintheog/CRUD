@@ -18,7 +18,7 @@ public class TodoappApplication {
     public CommandLineRunner init(ToDoRepository toDoRepository) {
         return args -> {
             toDoRepository.save(new ToDoDTO(null, "study", "JAVA", false));
-            toDoRepository.save(new ToDoDTO(null, "cook", "ramen", false));
+            toDoRepository.save(new ToDoDTO(null, "cook", "ramen", true));
             toDoRepository.save(new ToDoDTO(null, "workout", "running", false));
         };
     }
