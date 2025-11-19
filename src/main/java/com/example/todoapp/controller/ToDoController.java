@@ -135,7 +135,7 @@ public class ToDoController {
                     .orElseThrow(()-> new IllegalArgumentException("todo not found"));
             todo.setCompleted(!todo.isCompleted());
             toDoRepository.save(todo);
-            return "redirect:/todos" + id;
+            return "redirect:/todos/" + id;
         } catch(IllegalArgumentException e) {
             return "redirect:/todos";
         }
