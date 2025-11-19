@@ -6,11 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/todos")
 public class ToDoController {
     // repository를 컨트롤러에서도 쓰고 다른 클래스에 (TodoappApplication)서도 같은 저장소를 재사용해서 써야 함.
     //@Repository를 씀
@@ -21,7 +23,7 @@ public class ToDoController {
         this.toDoRepository = toDoRepository;
     }
 
-    @GetMapping("/todos")
+    @GetMapping
     public String todos(Model model) {
         //↓ 이전에 create 함수에서 만든 repository와 다른 객체(저장소)를 새로 만들어서 사용 하면 안됨
         //ToDoRepository toDoRepository = new ToDoRepository();
@@ -31,12 +33,12 @@ public class ToDoController {
         return "todos";
     }
 
-    @GetMapping("/todos/new")
+    @GetMapping("/new")
     public String newTodo() {
         return "new";
     }
 
-    @GetMapping("/todos/create")
+    @GetMapping("/create")
     public String create(
             @RequestParam String title,
             @RequestParam String content,
@@ -52,7 +54,7 @@ public class ToDoController {
         return "redirect:/todos";
     }
 
-    @GetMapping("/todos/{id}")
+    @GetMapping("/{id}")
     public String detail(
             @PathVariable Long id, Model model){
 //        ToDoDTO todo =  toDoRepository.findById(id);
@@ -68,14 +70,14 @@ public class ToDoController {
 
     }
 
-    @GetMapping("/todos/{id}/delete")
+    @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id, Model model) {
         //삭제로직
         toDoRepository.deleteById(id);
         return "redirect:/todos";
     }
 
-    @GetMapping("/todos/{id}/edit")
+    @GetMapping("/{id}/edit")
     public String edit(@PathVariable Long id, Model model) {
         try {
             ToDoDTO todo = toDoRepository.findById(id)
@@ -87,7 +89,7 @@ public class ToDoController {
         }
     }
 
-    @GetMapping("/todos/{id}/update")
+    @GetMapping("/{id}/update")
     public String update(@PathVariable Long id,
                          @RequestParam String title,
                          @RequestParam String content,
@@ -107,28 +109,28 @@ public class ToDoController {
         }
     }
 
-    @GetMapping("/todos/search")
+    @GetMapping("/search")
     public String search(@RequestParam String keyword, Model model) {
         List<ToDoDTO> todos = toDoRepository.findByTitleContaining(keyword);
         model.addAttribute("todos", todos);
         return "todos";
     }
 
-    @GetMapping("/todos/active")
+    @GetMapping("/active")
     public String active(Model model) {
         List<ToDoDTO> todos = toDoRepository.findByCompleted(false);
         model.addAttribute("todos", todos);
         return "todos";
     }
 
-    @GetMapping("/todos/completed")
+    @GetMapping("/completed")
     public String completed(Model model) {
         List<ToDoDTO> todos = toDoRepository.findByCompleted(true);
         model.addAttribute("todos", todos);
         return "todos";
     }
 
-    @GetMapping("/todos/{id}/toggle")
+    @GetMapping("/{id}/toggle")
     public String toggle(@PathVariable Long id, Model model) {
         try{
             ToDoDTO todo = toDoRepository.findById(id)
