@@ -3,11 +3,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default}" >
 <div layout:fragment="content">
-    <h1>edit</h1>
-    <form th:action="@{/todos/{id}/update(id=${todo.id})}">
-        <input type="text" name="title" th:value="${todo.title}">
-        <input type="text" name="content" th:value="${todo.content}">
-        <input type="checkbox" name="completed" value="true" th:checked="${todo.completed}">
-        <input type="submit">
+
+    <form th:action="@{/todos/{id}/update(id=${todo.id})}" class="form-label">
+        <label for="title" class="form-label"></label>
+        <input type="text" name="title" th:value="${todo.title}" id="title" class="form-control">
+        <label for="content" class="form-label"></label>
+        <input type="text" name="content" th:value="${todo.content}" id="content" class="form-control">
+        <input type="checkbox" name="completed" value="true" th:checked="${todo.completed}" class="form-check-input">
+        <input type="submit" class="btn btn-primary">
     </form>
 </div>
