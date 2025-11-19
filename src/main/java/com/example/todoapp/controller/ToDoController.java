@@ -128,6 +128,17 @@ public class ToDoController {
         return "todos";
     }
 
-    @GetMaooing()
+    @GetMapping("/todos/{id}/toggle")
+    public String toggle(@PathVariable Long id, Model model) {
+        try{
+            ToDoDTO todo = toDoRepository.findById(id)
+                    .orElseThrow(()-> new IllegalArgumentException("todo not found"));
+            todo.setCompleted(!todo.isCompleted());
+            toDoRepository.save(todo);
+            return "redirect:/todos" + id;
+        } catch(IllegalArgumentException e) {
+            return "redirect:/todos";
+        }
+    }
 
 }
