@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -25,8 +26,11 @@ public class ToDoRepository {
         return new ArrayList<>(storage.values());
     }
 
-    public ToDoDTO findById(Long id) {
-        return storage.get(id); //Map 형식이기 때문에 get함수를 씀
+    public Optional<ToDoDTO> findById(Long id) {
+        //return storage.get(id); //Map 형식이기 때문에 get함수를 씀
+        return Optional.ofNullable(storage.get(id));
+
+
     }
 
     public ToDoDTO deleteById(Long id) {

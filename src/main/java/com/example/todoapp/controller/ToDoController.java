@@ -55,9 +55,17 @@ public class ToDoController {
     @GetMapping("/todos/{id}")
     public String detail(
             @PathVariable Long id, Model model){
-        ToDoDTO todo =  toDoRepository.findById(id);
-        model.addAttribute("todo", todo);
-        return "detail";
+//        ToDoDTO todo =  toDoRepository.findById(id);
+        try{
+            ToDoDTO todo =  toDoRepository.findById(id)
+                    .orElseThrow(()-> new IllegalArgumentException("todo not found!"));
+            model.addAttribute("todo", todo);
+            return "detail";
+        } catch (IllegalArgumentException e) {
+            return "redirect:/todos";
+        }
+
+
     }
 
     @GetMapping("/todos/{id}/delete")
@@ -69,9 +77,14 @@ public class ToDoController {
 
     @GetMapping("/todos/{id}/edit")
     public String edit(@PathVariable Long id, Model model) {
-        ToDoDTO todo = toDoRepository.findById(id);
-        model.addAttribute("todo",todo);
-        return "edit";
+        try {
+            ToDoDTO todo = toDoRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("todo not found!"));
+            model.addAttribute("todo", todo);
+            return "edit";
+        } catch (IllegalArgumentException e) {
+            return "redirect:/todos";
+        }
     }
 
     @GetMapping("/todos/{id}/update")
@@ -80,14 +93,18 @@ public class ToDoController {
                          @RequestParam String content,
                          @RequestParam (defaultValue = "false") Boolean completed,
                          Model model) {
-        ToDoDTO todo = toDoRepository.findById(id);
+        try {
+            ToDoDTO todo = toDoRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("todo not found!"));
 
-        todo.setTitle(title);
-        todo.setContent(content);
-        todo.setCompleted(completed);
+            todo.setTitle(title);
+            todo.setContent(content);
+            todo.setCompleted(completed);
 
-        return "redirect:/todos/" + id;
-
+            return "redirect:/todos/" + id;
+        } catch (IllegalArgumentException e) {
+            return "redirect:/todos";
+        }
     }
 
 
