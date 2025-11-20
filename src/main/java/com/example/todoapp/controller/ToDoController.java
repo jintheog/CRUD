@@ -32,22 +32,24 @@ public class ToDoController {
     }
 
     @GetMapping("/new")
-    public String newTodo() {
-        return "new";
+    public String newTodo(Model model) {
+        model.addAttribute("todo", new ToDoDTO());
+        return "form";
     }
 
     @PostMapping
     public String create(
-            @RequestParam String title,
-            @RequestParam String content,
-            RedirectAttributes redirectAttributes,
-            Model model
+//            @RequestParam String title,
+//            @RequestParam String content,
+            @ModelAttribute ToDoDTO todo,
+            RedirectAttributes redirectAttributes
+//            Model model
     ) {
-        ToDoDTO toDoDTO = new ToDoDTO(null, title, content, false);
+//        ToDoDTO toDoDTO = new ToDoDTO(null, title, content, false);
 //        ToDoRepository toDoRepository = new ToDoRepository();
-
-        ToDoDTO todo = toDoRepository.save(toDoDTO);
-        model.addAttribute("todo", todo);
+//        ToDoDTO todo = toDoRepository.save(toDoDTO);
+        toDoRepository.save(todo);
+//        model.addAttribute("todo", todo);
         redirectAttributes.addFlashAttribute("message", "할 일이 생성되었습니다.");
 
 //        return "create";
@@ -85,7 +87,7 @@ public class ToDoController {
             ToDoDTO todo = toDoRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("todo not found!"));
             model.addAttribute("todo", todo);
-            return "update";
+            return "form";
         } catch (IllegalArgumentException e) {
             return "redirect:/todos";
         }
@@ -93,19 +95,21 @@ public class ToDoController {
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable Long id,
-                         @RequestParam String title,
-                         @RequestParam String content,
-                         @RequestParam (defaultValue = "false") Boolean completed,
-                         RedirectAttributes redirectAttributes,
-                         Model model) {
+//                         @RequestParam String title,
+//                         @RequestParam String content,
+//                         @RequestParam (defaultValue = "false") Boolean completed,
+                         @ModelAttribute ToDoDTO todo,
+                         RedirectAttributes redirectAttributes
+//                         Model model
+                        ) {
         try {
-            ToDoDTO todo = toDoRepository.findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("todo not found!"));
+//            ToDoDTO todo = toDoRepository.findById(id)
+//                    .orElseThrow(() -> new IllegalArgumentException("todo not found!"));
 
-            todo.setTitle(title);
-            todo.setContent(content);
-            todo.setCompleted(completed);
-
+//            todo.setTitle(title);
+//            todo.setContent(content);
+//            todo.setCompleted(completed);
+            todo.setId(id);
             toDoRepository.save(todo);
             redirectAttributes.addFlashAttribute("message", "할 일이 수정되었습니다.");
 
@@ -149,5 +153,8 @@ public class ToDoController {
             return "redirect:/todos";
         }
     }
+
+
+
 
 }

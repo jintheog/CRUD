@@ -6,6 +6,10 @@ public class ToDoDTO {
     private String content;
     private boolean completed;
 
+    public ToDoDTO() {
+
+    }
+
     public ToDoDTO(Long id, String title, String content, boolean completed) {
         this.id = id;
         this.title = title;
