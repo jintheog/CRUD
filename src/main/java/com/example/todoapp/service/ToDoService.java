@@ -40,8 +40,8 @@ public class ToDoService {
     }
 
     public ToDoDTO updateTodoById(Long id, ToDoDTO newTodo) {
-        validateTitleLength(newTodo.getTitle());
-
+//        validateTitleLength(newTodo.getTitle());
+        validateTitle(newTodo.getTitle());
         ToDoDTO originTodo = getTodoById(id);
 
         originTodo.setTitle(newTodo.getTitle());
@@ -52,7 +52,8 @@ public class ToDoService {
     }
 
     public ToDoDTO createTodo(ToDoDTO todo) {
-        validateTitleLength(todo.getTitle());
+//        validateTitleLength(todo.getTitle());
+        validateTitle(todo.getTitle());
         return toDoRepository.save(todo);
     }
 
@@ -84,6 +85,15 @@ public class ToDoService {
 
     public void deleteCompletedTodos() {
         toDoRepository.deleteCompleted();
+    }
+
+    private void validateTitle(String title) {
+        if(title ==  null || title.isBlank() || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("제목은 필수입니다.");
+        }
+        if(title.length() > 50) {
+            throw new IllegalArgumentException("제목은 50자를 넘을 수 없습니다.");
+        }
     }
 
 

@@ -70,9 +70,10 @@ public class ToDoController {
             redirectAttributes.addFlashAttribute("message", "할 일이 생성되었습니다.");
             return "redirect:/todos";
         } catch(IllegalArgumentException e){
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-            redirectAttributes.addFlashAttribute("status", "error");
-            redirectAttributes.addFlashAttribute("todo", todo);
+//            redirectAttributes.addFlashAttribute("message", e.getMessage());
+//            redirectAttributes.addFlashAttribute("status", "error");
+//            redirectAttributes.addFlashAttribute("todo", todo);
+            redirectAttributes.addFlashAttribute("error",e.getMessage());
             return "redirect:/todos/new";
 
         }
