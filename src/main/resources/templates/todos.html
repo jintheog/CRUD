@@ -4,10 +4,15 @@
       layout:decorate="~{layout/default}" >
 
 <div layout:fragment="content">
-    <div class="mb-3">
-        <span>전체: <b th:text="${totalCount}">0</b></span>
-        <span class="ms-3">완료: <b th:text="${completedCount}">0</b></span>
-        <span class="ms-3">미완료: <b th:text="${activeCount}">0</b></span>
+<!--    <div class="mb-3">-->
+<!--        <span>전체: <b th:text="${totalCount}">0</b></span>-->
+<!--        <span class="ms-3">완료: <b th:text="${completedCount}">0</b></span>-->
+<!--        <span class="ms-3">미완료: <b th:text="${activeCount}">0</b></span>-->
+<!--    </div>-->
+    <div class="stats">
+        <p>전체 : <span th:text="${totalCount}"></span></p>
+        <p>완료 : <span th:text="${completedCount}"></span></p>
+        <p>미완료 : <span th:text="${activeCount}"></span></p>
     </div>
 
     <form action="/todos/delete/completed" method="post" class="mb-3">

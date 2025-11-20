@@ -37,9 +37,13 @@ public class ToDoController {
         List<ToDoDTO> todos = toDoService.getAllTodos();
         model.addAttribute("todos", todos);
 
-        model.addAttribute("totalCount", toDoService.getTotalCount());
-        model.addAttribute("completedCount", toDoService.getCompletedCount());
-        model.addAttribute("activeCount", toDoService.getActiveCount());
+//        model.addAttribute("totalCount", toDoService.getTotalCount());
+//        model.addAttribute("completedCount", toDoService.getCompletedCount());
+//        model.addAttribute("activeCount", toDoService.getActiveCount());
+
+        model.addAttribute("totalCount", toDoService.getTotalCount2());
+        model.addAttribute("completedCount", toDoService.getCompletedCount2());
+        model.addAttribute("activeCount", toDoService.getActiveCount2());
 
         return "todos";
     }
@@ -134,14 +138,14 @@ public class ToDoController {
                          RedirectAttributes redirectAttributes
 //                         Model model
                         ) {
-        try {
-            toDoService.validateTitleLength(todo.getTitle());
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
-            redirectAttributes.addFlashAttribute("status", "error");
-            redirectAttributes.addFlashAttribute("todo", todo);
-            return "redirect:/todos/" + id + "/update";
-        }
+//        try {
+//            toDoService.validateTitleLength(todo.getTitle());
+//        } catch (IllegalArgumentException e) {
+//            redirectAttributes.addFlashAttribute("message", e.getMessage());
+//            redirectAttributes.addFlashAttribute("status", "error");
+//            redirectAttributes.addFlashAttribute("todo", todo);
+//            return "redirect:/todos/" + id + "/update";
+//        }
 
         try {
 //            ToDoDTO todo = toDoRepository.findById(id)
@@ -157,10 +161,15 @@ public class ToDoController {
 
             return "redirect:/todos/" + id;
         } catch (IllegalArgumentException e) {
+            if(e.getMessage().contains("제목")){
+                redirectAttributes.addFlashAttribute("error",e.getMessage());
+                return "redirect:/todos"+id+"/update";
+            }
+            else {
+                redirectAttributes.addFlashAttribute("message", "없는 to do 입니다.");
+                return "redirect:/todos";
+            }
 
-
-            redirectAttributes.addFlashAttribute("message", "없는 to do 입니다.");
-            return "redirect:/todos";
         }
     }
 
@@ -203,13 +212,13 @@ public class ToDoController {
         }
     }
 
-    @PostMapping("/delete/completed")
-    public String deleteCompleted(RedirectAttributes redirectAttributes) {
-        toDoService.deleteCompletedTodos();
-        redirectAttributes.addFlashAttribute("message", "완료된 할 일이 모두 삭제되었습니다.");
-        redirectAttributes.addFlashAttribute("status", "delete");
-        return "redirect:/todos";
-    }
+//    @PostMapping("/delete/completed")
+//    public String deleteCompleted(RedirectAttributes redirectAttributes) {
+//        toDoService.deleteCompletedTodos();
+//        redirectAttributes.addFlashAttribute("message", "완료된 할 일이 모두 삭제되었습니다.");
+//        redirectAttributes.addFlashAttribute("status", "delete");
+//        return "redirect:/todos";
+//    }
 
 
     // 1. 제목 검증 추가
@@ -220,6 +229,13 @@ public class ToDoController {
     // - 전체, 완료된, 미완료 할 일 개수 => /todos 에 표시
     
     // 3. 완료된 할 일 일괄 삭제
+    @GetMapping("/delete/completed")
+    public String deleteCompleted(RedirectAttributes redirectAttributes) {
+        // delete all
+        toDoService.deleteCompletedTodos();
+        redirectAttributes.addFlashAttribute("message","완료된 할 일 삭제");
+        return "redirect:/todos";
+    }
 
 
 

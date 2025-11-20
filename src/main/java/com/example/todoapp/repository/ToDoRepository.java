@@ -64,9 +64,13 @@ public class ToDoRepository {
                 .count();
     }
 
-    public void deleteCompleted() {
-        storage.values().removeIf(ToDoDTO::isCompleted);
-    }
+//    public void deleteCompleted() {
+//        storage.values().removeIf(ToDoDTO::isCompleted);
+//    }
 
+    public void deleteCompleted() {
+        storage.entrySet().removeIf(item -> item.getValue().isCompleted()
+        );
+    }
 
 }

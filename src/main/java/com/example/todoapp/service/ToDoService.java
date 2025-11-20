@@ -83,9 +83,9 @@ public class ToDoService {
         return toDoRepository.countActive();
     }
 
-    public void deleteCompletedTodos() {
-        toDoRepository.deleteCompleted();
-    }
+//    public void deleteCompletedTodos() {
+//        toDoRepository.deleteCompleted();
+//    }
 
     private void validateTitle(String title) {
         if(title ==  null || title.isBlank() || title.trim().isEmpty()) {
@@ -96,5 +96,19 @@ public class ToDoService {
         }
     }
 
+    public long getTotalCount2() {
+        return toDoRepository.findAll().size();
+    };
 
+    public long getCompletedCount2() {
+        return toDoRepository.findByCompleted(true).size();
+    }
+
+    public long getActiveCount2() {
+        return toDoRepository.findByCompleted(false).size();
+    }
+
+    public void deleteCompletedTodos() {
+        toDoRepository.deleteCompleted();
+    }
 }
