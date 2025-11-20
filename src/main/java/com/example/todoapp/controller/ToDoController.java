@@ -229,7 +229,7 @@ public class ToDoController {
     // - 전체, 완료된, 미완료 할 일 개수 => /todos 에 표시
     
     // 3. 완료된 할 일 일괄 삭제
-    @GetMapping("/delete/completed")
+    @GetMapping("/delete-completed")
     public String deleteCompleted(RedirectAttributes redirectAttributes) {
         // delete all
         toDoService.deleteCompletedTodos();
