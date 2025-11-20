@@ -48,4 +48,25 @@ public class ToDoRepository {
                 .toList();
     }
 
+    public long countAll() {
+        return storage.size();
+    }
+
+    public long countCompleted() {
+        return storage.values().stream()
+                .filter(ToDoDTO::isCompleted)
+                .count();
+    }
+
+    public long countActive() {
+        return storage.values().stream()
+                .filter(todo -> !todo.isCompleted())
+                .count();
+    }
+
+    public void deleteCompleted() {
+        storage.values().removeIf(ToDoDTO::isCompleted);
+    }
+
+
 }

@@ -4,6 +4,18 @@
       layout:decorate="~{layout/default}" >
 
 <div layout:fragment="content">
+    <div class="mb-3">
+        <span>전체: <b th:text="${totalCount}">0</b></span>
+        <span class="ms-3">완료: <b th:text="${completedCount}">0</b></span>
+        <span class="ms-3">미완료: <b th:text="${activeCount}">0</b></span>
+    </div>
+
+    <form action="/todos/delete/completed" method="post" class="mb-3">
+        <button type="submit" class="btn btn-danger btn-sm"
+                onclick="return confirm('완료된 할 일을 모두 삭제하시겠습니까?')">
+            완료된 할 일 일괄 삭제
+        </button>
+    </form>
 
     <table class="table table-striped">
         <thead>

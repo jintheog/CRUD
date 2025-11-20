@@ -31,7 +31,7 @@
     </nav>
     <div class="container">
         <div th:if="${message}"
-             th:classappend="${status == 'delete' ? 'alert-danger' : 'alert-primary'}"
+             th:classappend="${status == 'delete' or status == 'error' ? 'alert-danger' : 'alert-primary'}"
              class="alert alert-dismissible fade show"
              role="alert">
 

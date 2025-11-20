@@ -30,8 +30,20 @@ public class ToDoService {
 
     }
 
+    public void  validateTitleLength(String title) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("제목은 비어있을 수 없습니다.");
+        }
+        if (title.length() > 50) {
+            throw new IllegalArgumentException("제목은 50자를 초과할 수 없습니다.");
+        }
+    }
+
     public ToDoDTO updateTodoById(Long id, ToDoDTO newTodo) {
+        validateTitleLength(newTodo.getTitle());
+
         ToDoDTO originTodo = getTodoById(id);
+
         originTodo.setTitle(newTodo.getTitle());
         originTodo.setContent(newTodo.getContent());
         originTodo.setCompleted(newTodo.isCompleted());
@@ -40,6 +52,7 @@ public class ToDoService {
     }
 
     public ToDoDTO createTodo(ToDoDTO todo) {
+        validateTitleLength(todo.getTitle());
         return toDoRepository.save(todo);
     }
 
@@ -56,5 +69,22 @@ public class ToDoService {
         todo.setCompleted(!todo.isCompleted());
         return toDoRepository.save(todo);
     }
+
+    public long getTotalCount() {
+        return toDoRepository.countAll();
+    }
+
+    public long getCompletedCount() {
+        return toDoRepository.countCompleted();
+    }
+
+    public long getActiveCount() {
+        return toDoRepository.countActive();
+    }
+
+    public void deleteCompletedTodos() {
+        toDoRepository.deleteCompleted();
+    }
+
 
 }
