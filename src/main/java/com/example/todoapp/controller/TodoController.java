@@ -1,8 +1,8 @@
 package com.example.todoapp.controller;
 
-import com.example.todoapp.dto.ToDoDTO;
-import com.example.todoapp.repository.ToDoRepository;
-import com.example.todoapp.service.ToDoService;
+import com.example.todoapp.dto.TodoDTO;
+import com.example.todoapp.repository.TodoRepository;
+import com.example.todoapp.service.TodoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/todos")
-public class ToDoController {
+public class TodoController {
     // repository를 컨트롤러에서도 쓰고 다른 클래스에 (TodoappApplication)서도 같은 저장소를 재사용해서 써야 함.
     //@Repository를 씀
     //private final ToDoRepository toDoRepository = new ToDoRepository();
@@ -22,9 +22,9 @@ public class ToDoController {
 //        this.toDoRepository = toDoRepository;
 //    }
 
-    private final ToDoService toDoService;
+    private final TodoService toDoService;
 
-    public ToDoController(ToDoService toDoService) {
+    public TodoController(TodoService toDoService) {
         this.toDoService = toDoService;
     }
 
@@ -34,7 +34,7 @@ public class ToDoController {
         //ToDoRepository toDoRepository = new ToDoRepository();
         // 저장소 객체를 메서드 내부가 아니라 클래스 내부에서 만들어야 함.
 //        List<ToDoDTO> todos = toDoRepository.findAll();
-        List<ToDoDTO> todos = toDoService.getAllTodos();
+        List<TodoDTO> todos = toDoService.getAllTodos();
         model.addAttribute("todos", todos);
 
 //        model.addAttribute("totalCount", toDoService.getTotalCount());
@@ -52,7 +52,7 @@ public class ToDoController {
     public String newTodo(Model model) {
 //        model.addAttribute("todo", new ToDoDTO());
         if (!model.containsAttribute("todo")) {
-            model.addAttribute("todo", new ToDoDTO());
+            model.addAttribute("todo", new TodoDTO());
         }
         return "form";
     }
@@ -61,7 +61,7 @@ public class ToDoController {
     public String create(
 //            @RequestParam String title,
 //            @RequestParam String content,
-            @ModelAttribute ToDoDTO todo,
+            @ModelAttribute TodoDTO todo,
             RedirectAttributes redirectAttributes
 //            Model model
     ) {
@@ -69,18 +69,18 @@ public class ToDoController {
 //        ToDoRepository toDoRepository = new ToDoRepository();
 //        ToDoDTO todo = toDoRepository.save(toDoDTO);
 //        toDoRepository.save(todo);
-        try{
+//        try{
             toDoService.createTodo(todo);
             redirectAttributes.addFlashAttribute("message", "할 일이 생성되었습니다.");
             return "redirect:/todos";
-        } catch(IllegalArgumentException e){
-//            redirectAttributes.addFlashAttribute("message", e.getMessage());
-//            redirectAttributes.addFlashAttribute("status", "error");
-//            redirectAttributes.addFlashAttribute("todo", todo);
-            redirectAttributes.addFlashAttribute("error",e.getMessage());
-            return "redirect:/todos/new";
-
-        }
+//        } catch(IllegalArgumentException e){
+////            redirectAttributes.addFlashAttribute("message", e.getMessage());
+////            redirectAttributes.addFlashAttribute("status", "error");
+////            redirectAttributes.addFlashAttribute("todo", todo);
+//            redirectAttributes.addFlashAttribute("error",e.getMessage());
+//            return "redirect:/todos/new";
+//
+//        }
 
 //        model.addAttribute("todo", todo);
 
@@ -90,18 +90,17 @@ public class ToDoController {
     }
 
     @GetMapping("/{id}")
-    public String detail(
-            @PathVariable Long id, Model model){
+    public String detail(@PathVariable Long id, Model model){
 //        ToDoDTO todo =  toDoRepository.findById(id);
-        try{
+//        try{
 //            ToDoDTO todo =  toDoRepository.findById(id)
 //                    .orElseThrow(()-> new IllegalArgumentException("todo not found!"));
-            ToDoDTO todo = toDoService.getTodoById(id);
+            TodoDTO todo = toDoService.getTodoById(id);
             model.addAttribute("todo", todo);
             return "detail";
-        } catch (IllegalArgumentException e) {
-            return "redirect:/todos";
-        }
+//        } catch (IllegalArgumentException e) {
+//            return "redirect:/todos";
+//        }
 
 
     }
@@ -118,15 +117,15 @@ public class ToDoController {
 
     @GetMapping("/{id}/update")
     public String edit(@PathVariable Long id, Model model) {
-        try {
+//        try {
 //            ToDoDTO todo = toDoRepository.findById(id)
 //                    .orElseThrow(() -> new IllegalArgumentException("todo not found!"));
-            ToDoDTO todo = toDoService.getTodoById(id);
+            TodoDTO todo = toDoService.getTodoById(id);
             model.addAttribute("todo", todo);
             return "form";
-        } catch (IllegalArgumentException e) {
-            return "redirect:/todos";
-        }
+//        } catch (IllegalArgumentException e) {
+//            return "redirect:/todos";
+//        }
     }
 
     @PostMapping("/{id}/update")
@@ -134,7 +133,7 @@ public class ToDoController {
 //                         @RequestParam String title,
 //                         @RequestParam String content,
 //                         @RequestParam (defaultValue = "false") Boolean completed,
-                         @ModelAttribute ToDoDTO todo,
+                         @ModelAttribute TodoDTO todo,
                          RedirectAttributes redirectAttributes
 //                         Model model
                         ) {
@@ -147,7 +146,7 @@ public class ToDoController {
 //            return "redirect:/todos/" + id + "/update";
 //        }
 
-        try {
+//        try {
 //            ToDoDTO todo = toDoRepository.findById(id)
 //                    .orElseThrow(() -> new IllegalArgumentException("todo not found!"));
 
@@ -160,23 +159,23 @@ public class ToDoController {
             redirectAttributes.addFlashAttribute("message", "할 일이 수정되었습니다.");
 
             return "redirect:/todos/" + id;
-        } catch (IllegalArgumentException e) {
-            if(e.getMessage().contains("제목")){
-                redirectAttributes.addFlashAttribute("error",e.getMessage());
-                return "redirect:/todos"+id+"/update";
-            }
-            else {
-                redirectAttributes.addFlashAttribute("message", "없는 to do 입니다.");
-                return "redirect:/todos";
-            }
-
-        }
+//        } catch (IllegalArgumentException e) {
+//            if(e.getMessage().contains("제목")){
+//                redirectAttributes.addFlashAttribute("error",e.getMessage());
+//                return "redirect:/todos"+id+"/update";
+//            }
+//            else {
+//                redirectAttributes.addFlashAttribute("message", "없는 to do 입니다.");
+//                return "redirect:/todos";
+//            }
+//
+//        }
     }
 
     @GetMapping("/search")
     public String search(@RequestParam String keyword, Model model) {
 //        List<ToDoDTO> todos = toDoRepository.findByTitleContaining(keyword);
-        List<ToDoDTO> todos = toDoService.searchTodos(keyword);
+        List<TodoDTO> todos = toDoService.searchTodos(keyword);
         model.addAttribute("todos", todos);
 
         return "todos";
@@ -185,7 +184,7 @@ public class ToDoController {
     @GetMapping("/active")
     public String active(Model model) {
 //        List<ToDoDTO> todos = toDoRepository.findByCompleted(false);
-        List<ToDoDTO> todos = toDoService.getTodosByCompleted(false);
+        List<TodoDTO> todos = toDoService.getTodosByCompleted(false);
         model.addAttribute("todos", todos);
         return "todos";
     }
@@ -193,23 +192,23 @@ public class ToDoController {
     @GetMapping("/completed")
     public String completed(Model model) {
 //        List<ToDoDTO> todos = toDoRepository.findByCompleted(true);
-        List<ToDoDTO> todos = toDoService.getTodosByCompleted(true);
+        List<TodoDTO> todos = toDoService.getTodosByCompleted(true);
         model.addAttribute("todos", todos);
         return "todos";
     }
 
     @GetMapping("/{id}/toggle")
     public String toggle(@PathVariable Long id, Model model) {
-        try{
+//        try{
 //            ToDoDTO todo = toDoRepository.findById(id)
 //                    .orElseThrow(()-> new IllegalArgumentException("todo not found"));
 //            todo.setCompleted(!todo.isCompleted());
 //            toDoRepository.save(todo);
             toDoService.toggleCompleted(id);
             return "redirect:/todos/" + id;
-        } catch(IllegalArgumentException e) {
-            return "redirect:/todos";
-        }
+//        } catch(IllegalArgumentException e) {
+//            return "redirect:/todos";
+//        }
     }
 
 //    @PostMapping("/delete/completed")

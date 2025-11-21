@@ -1,16 +1,16 @@
 package com.example.todoapp.dto;
 
-public class ToDoDTO {
+public class TodoDTO {
     private Long id;
     private String title;
     private String content;
     private boolean completed;
 
-    public ToDoDTO() {
+    public TodoDTO() {
 
     }
 
-    public ToDoDTO(Long id, String title, String content, boolean completed) {
+    public TodoDTO(Long id, String title, String content, boolean completed) {
         this.id = id;
         this.title = title;
         this.content = content;

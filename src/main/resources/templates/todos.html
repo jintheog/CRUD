@@ -15,7 +15,7 @@
         <p>미완료 : <span th:text="${activeCount}"></span></p>
     </div>
 
-    <form action="/todos/delete/completed" method="post" class="mb-3">
+    <form action="/todos/delete-completed" method="get" class="mb-3">
         <button type="submit" class="btn btn-danger btn-sm"
                 onclick="return confirm('완료된 할 일을 모두 삭제하시겠습니까?')">
             완료된 할 일 일괄 삭제

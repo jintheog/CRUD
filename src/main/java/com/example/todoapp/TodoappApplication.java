@@ -1,7 +1,8 @@
 package com.example.todoapp;
 
-import com.example.todoapp.dto.ToDoDTO;
-import com.example.todoapp.repository.ToDoRepository;
+import com.example.todoapp.dto.TodoDTO;
+import com.example.todoapp.entity.TodoEntity;
+import com.example.todoapp.repository.TodoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,11 +16,11 @@ public class TodoappApplication {
     }
 
     @Bean
-    public CommandLineRunner init(ToDoRepository toDoRepository) {
+    public CommandLineRunner init(TodoRepository todoRepository) {
         return args -> {
-            toDoRepository.save(new ToDoDTO(null, "study", "JAVA", false));
-            toDoRepository.save(new ToDoDTO(null, "cook", "ramen", true));
-            toDoRepository.save(new ToDoDTO(null, "workout", "running", false));
+            todoRepository.save(new TodoEntity("study", "JAVA", false));
+            todoRepository.save(new TodoEntity("cook", "ramen", true));
+            todoRepository.save(new TodoEntity("workout", "running", false));
         };
     }
 
